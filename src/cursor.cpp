@@ -2,23 +2,32 @@
 
 namespace core {
 
-template <class Buffer>
-int Cursor::move_left(Buffer &buffer) {
-    if (position == 0) {return 1;}
-    if (line_position == 0) {
-        position--;
-        line--;
-        line_position=max_line;
+Cursor::Cursor() : position_(0), max_position_(0) {};
+
+Cursor::Cursor(size_t max_position) : position(0), max_position_(max_position) {};
+
+void Cursor::set_max_position(const size_t &max_position) {max_position_ = max_position;}
+
+void Cursor::set_position(const size_t &position) {position_ = position;}
+
+int Cursor::move_left(size_t amount = 1) {
+    if (position_ <= amount) {
+        position -= amount;
         return 0;
     }
-    position--;
-    line_position--;
-    return 0;
+    return 1;
 }
 
-template <class Buffer>
-int Cursor::move_left(Buffer &buffer) {
-    if (position + 1 >= buffer.size()) {return 1;}
-    position++;
+int Cursor::move_right(size_t amount = 1) {
+    if (position_ + amount <= max_position_) {
+        position += amount;
+        return 0;
+    }
+    return 1;
 }
+
+size_t Cursor::get_position() const {return position_;}
+
+size_t Cursor::get_max_position() const {return max_position_;}
+
 }
