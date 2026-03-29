@@ -1,31 +1,30 @@
-#pragma once
-#include <string>
-#include <iomanip>
-#include <sstream>
 #include <fstream>
+#include <string>
+#include <deque>
 
 namespace core {
 
 class Buffer {
 public:
-    bool check_modified() const {return is_modified;}
+    int load(std::string &filename);
 
-    void insert_char(size_t &address, char &symbol,);
-
-    void delete_char(size_t &address);
-    
     int save();
-    int save(std::string &new_filename);
+    int save(std::string &filename);
 
-    int load();
-    int load(std::string &new_filename);
+    size_t size() const;
+    bool status() const;
+    std::deque<char> get_data() const;
+    std::string get_filename() const;
 
-    Buffer() : is_modified(false), filename("");
-    Buffer(std::string &filename_) : data(""), is_modified(false), filename(filename_);
-    
+    int insert_byte(const char &byte, const size_t &index);
+    int erase_byte(const size_t &index);
+
+    Buffer();
+    Buffer(std::string &filename);
+
 private:
-    std::string data;
+    std::deque<char> data_;
+    std::string filename_;
     bool is_modified;
-    std::string filename;
 };
-} // namespace core
+}

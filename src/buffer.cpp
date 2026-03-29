@@ -2,72 +2,73 @@
 
 namespace core {
 
-void Buffer::insert_char(size_t &address, char &symbol) {
-    line.insert(address, 1, symbol);
+Buffer::Buffer() : filename_(""), is_modified(false) {};
+
+Buffer::Buffer(std::string &filename) : filename_(filename), is_modified(false) {
+    std::ifstream file(filename_, std::ios::binary | std::ios::ate);
+    if (!file) {throw std::runtime_error("Open file");}
+    std::streamsize size = file.tellg();
+    file.seekg(0, std::ios::beg);
+    for (size_t i = 0; i < size; ++i) {
+        char byte = 0;
+        if (file.read(&byte, 1)) {data_.push_back(byte);}
+    }
+    file.close();
+}
+
+size_t Buffer::size() const {return data_.size();}
+
+bool Buffer::status() const {return is_modified();}
+
+std::deque<char> Buffer::get_data() const {return data_;}
+
+std::string Buffer::get_filename() const {return filename_;}
+
+int Buffer::load(std::string &filename) {
+    if (is_modified) {return 1;}
+    filename_ = filename;
+    std::ifstream file(filename, std::ios::binary | std::ios::ate);
+    if (!file) {return 2;}
+    std::streamsize size = file.tellg();
+    file.seekg(0, std::ios::beg);
+    for (size_t i = 0; i < size; i++) {
+        char byte = 0;
+        if (file.read(&byte, 1)) {data_.push_back(byte);}
+    }
+    file.close();
+    return 0;
+}
+
+int save() {
+    if (filename_.empty()) {return 1;}
+    std::ofstream file(filename_, std::ios::binary);
+    if (!file) {return 2;}
+    for (size_t i = 0; i < data_.size(); ++i) {
+        if (!file.write(&data_[i], 1)) {return 3;}
+    }
+    file.close();
+    is_modified = false;
+    return 0;
+}
+
+int save(std::string &filename) {
+    if (!filename_.empty()) {return 1;}
+    filename_ = filename;
+    return save();
+}
+
+int insert_byte(const char &byte, const size_t &index) {
+    if (data_.size() < index) {return 1};
+    data_.insert(data_.begin() + index, byte);
     is_modified = true;
-}
-
-void Buffer::delete_char(size_t &address) {line.erase(address, 1);}
-
-int Buffer::save() {
-    if (filename == "") {return 1;}
-    std::ofstream file(filename, std::ios::binary);
-    if (!file) {return 2;}
-    for (size_t i = 0; i < data.lenght(); i+= 2) {
-        std::string sbyte = data.substr(i, 2);
-        char byte = static_cast<char>(std::stoi(sbyte, nullptr, 16));
-        file.write(&byte, 1);
-    }
-    file.close();
-    is_modified = false;
     return 0;
 }
 
-int Buffer::save(std::string new_filename) {
-    if (new_filename == "") {return 1;}
-    if (filename != "") {return 4;}
-    filename = new_filename;
-    std::ofstream file(new_filename, std::ios::binary);
-    for (size_t i = 0; i < data.lenght(); i+= 2) {
-        std::string sbyte = data.substr(i, 2);
-        char byte = static_cast<char>(std::stoi(sbyte, nullptr, 16));
-        file.write(&byte, 1);
-    }
-    file.close();
-    is_modified = false;
+int erase_byte(const size_t &index) {
+    if (index > data_.size()) {return 1;}
+    data_.erase(data_.begin() + index);
+    is_modified = true;
     return 0;
 }
 
-int Buffer::load() {
-    if (filename == "") {return 1;}
-    if (is_modified) {return 3;}
-    std::ifstream file(filename, std::ios::binary);
-    if (!file) {return 2;}
-    std::stringstream ss;
-    char byte;
-
-    while (file.get(byte)) {
-        ss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(static_cast<unsigned char>(byte));
-    }
-    data = ss.str();
-    return 0;
 }
-
-int Buffer::load(std::string new_filename) {
-    if (new_filename == "") {return 1;}
-    if (filename != "") {return 4;}
-    if (is_modified) {return 3;}
-    std::ifstream file(filename, std::ios::binary);
-    if (!file) {return 2;}
-    std::stringstream ss;
-    char byte;
-
-    while (file.get(byte)) {
-        ss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(static_cast<unsigned char>(byte));
-    }
-    data = ss.str();
-    return 0;
-}
-
-
-} // namespace core
