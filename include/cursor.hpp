@@ -1,3 +1,5 @@
+#include <cstddef>
+
 namespace core {
 
 class Cursor {
