@@ -15,6 +15,7 @@ std::string& View::get_string_hex(const std::deque<unsigned char> &data, size_t 
 }
 
 std::deque<std::string>& View::get_deq_hex(const std::deque<unsigned char> &data, size_t from, size_t to) {
+    deq_hex.clear();
     for (size_t i = from; i < to; ++i) {
         std::ostringstream oss;
         oss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(data[i]);

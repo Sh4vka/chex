@@ -8,7 +8,7 @@
 
 namespace render {
 
-ftxui::Element get_hbox(const std::deque<std::string> &hexdata, size_t len = 16);
+ftxui::Element get_hbox(const std::deque<std::string> &hexdata, size_t len = 16, size_t cursor_pos = 0);
 
 ftxui::Element get_vbox(const std::deque<std::string> &hexdata, size_t len = 16);
 

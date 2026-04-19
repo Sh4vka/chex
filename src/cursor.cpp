@@ -11,7 +11,7 @@ void Cursor::set_max_position(const size_t &max_position) {max_position_ = max_p
 void Cursor::set_position(const size_t &position) {position_ = position;}
 
 int Cursor::move_left(size_t amount) {
-    if (position_ <= amount) {
+    if (position_ >= amount) {
         position_ -= amount;
         return 0;
     }

@@ -11,6 +11,7 @@ set(LIB_SOURCES
     src/cursor.cpp
     src/view.cpp
     src/tui.cpp
+    src/controller.cpp
 )
 
 set(LIB_HEADERS
@@ -18,6 +19,7 @@ set(LIB_HEADERS
     include/cursor.hpp
     include/view.hpp
     include/tui.hpp
+    include/controller.hpp
 )
 
 add_library(Lib STATIC ${LIB_SOURCES})
