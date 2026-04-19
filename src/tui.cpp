@@ -11,12 +11,18 @@ namespace render {
         std::deque<ftxui::Element> address;
 
         size_t row = 0;
+        size_t byte_index = cursor_pos / 2;
+        size_t nibble = cursor_pos % 2;
 
         for (size_t i = 0; i < hexdata.size(); ++i) {
             std::string byte = hexdata[i];
-            auto cur_byte = ftxui::text(std::string(byte));
-            if (i == cursor_pos) {cur_byte = cur_byte | ftxui::inverted;}
-            current_row.push_back(cur_byte);
+            auto left = ftxui::text(std::string(1, byte[0]));
+            auto right = ftxui::text(std::string(1, byte[1]));
+            if (i == byte_index) {
+                if (nibble == 0) {left = left | ftxui::inverted;}
+                else {right = right | ftxui::inverted;}
+            }
+            current_row.push_back(ftxui::hbox({left, right}));
             if ((i + 1) % len != 0)
                 current_row.push_back(ftxui::text(" "));
 

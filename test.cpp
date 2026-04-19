@@ -9,7 +9,7 @@ int main() {
     std::string file = "test.bin";
 
     core::Buffer buf(file);
-    core::Cursor cur(buf.size() * 2); // nibble cursor
+    core::Cursor cur(buf.size() * 2); 
     render::View view;
 
     render::Editor editor(buf, cur, 16);
@@ -47,7 +47,12 @@ int main() {
     }
 
     if (event == ftxui::Event::Character('x')) {
-        editor.delete_symbol();
+        editor.delete_byte();
+        return true;
+    }
+
+    if (event == ftxui::Event::Character('i')) {
+        editor.insert_nibble('a');
         return true;
     }
 

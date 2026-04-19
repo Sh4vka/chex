@@ -18,6 +18,7 @@ public:
     std::string get_filename() const;
 
     int insert_byte(const unsigned char byte, const size_t &index);
+    char get_byte(const size_t index) const;
     int erase_byte(const size_t &index);
 
     Buffer();

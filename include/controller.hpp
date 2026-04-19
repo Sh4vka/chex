@@ -11,7 +11,8 @@ public:
     void move_up();
     void move_down();
     
-    void delete_symbol();
+    void delete_byte();
+    void insert_nibble(const char nibble);
 
     Editor(core::Buffer &buffer_, core::Cursor &cursor_, size_t bytes_per_row);
 
@@ -19,6 +20,7 @@ private :
     core::Cursor& cursor;
     core::Buffer& buffer;
     size_t bytes_per_row;
+    bool has_pending;
 };
 
 }

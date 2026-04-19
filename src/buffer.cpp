@@ -64,6 +64,8 @@ int Buffer::insert_byte(const unsigned char byte, const size_t &index) {
     return 0;
 }
 
+char Buffer::get_byte(const size_t index) const {return data_[index];}
+
 int Buffer::erase_byte(const size_t &index) {
     if (index > data_.size()) {return 1;}
     data_.erase(data_.begin() + index);
