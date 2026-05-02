@@ -117,6 +117,9 @@ void Editor::event_search(ftxui::Event e) {
     //TODO
     mode = Mode::NORMAL;
 }
+
+Editor::Mode Editor::get_mode() const {return mode;}
+std::string Editor::command() const {return command_buffer;}
     
 void Editor::move_left() {cursor.move(-1);}
 void Editor::move_right() {cursor.move(1);}

@@ -35,6 +35,37 @@ ftxui::Element get_hbox(const std::deque<std::string> &hexdata, core::Cursor &cu
     return ftxui::hbox(addr, data);
 }
 
+ftxui::Element metadata(const Editor::Mode mode, const std::string filename, const std::string command) {
+    ftxui::Element info;
+    switch (mode) {
+        case (Editor::Mode::NORMAL) : {
+            info = ftxui::hbox(ftxui::text(filename) | ftxui::flex, ftxui::text("NORMAL"));
+            break;
+        }
+        case (Editor::Mode::INSERT) : {
+            info = ftxui::hbox(ftxui::text(filename) | ftxui::flex, ftxui::text("INSERT"));
+            break;
+        }
+        case (Editor::Mode::COMMAND) : {
+            info = ftxui::hbox(ftxui::text("> "), ftxui::text(command));
+            break;
+        }
+        case (Editor::Mode::SEARCH) : {
+            info = ftxui::hbox(ftxui::text("/"), ftxui::text(command));
+            break;
+        }
+        case (Editor::Mode::VISUAL) : {
+            info = ftxui::hbox(ftxui::text(filename) | ftxui::flex, ftxui::text("VISUAL"));
+            break;
+        }
+        default : {
+            info = ftxui::hbox(ftxui::text(filename));
+            break;
+        }
+    }
+    return info;
+}
+
 ftxui::Element get_vbox(const std::deque<std::string> &hexdata, size_t len) {
     std::deque<ftxui::Element> rows;
     std::deque<ftxui::Element> current_row;

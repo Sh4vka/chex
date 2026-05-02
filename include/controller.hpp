@@ -18,6 +18,9 @@ public:
     
     void event(ftxui::Event e);
 
+    Mode get_mode() const;
+    std::string command() const;
+
     Editor(core::Buffer &buffer_, core::Cursor &cursor_, size_t bytes_per_row);
 
 private :

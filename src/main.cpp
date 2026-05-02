@@ -19,8 +19,9 @@ int main(int argc, char* argv[]) {
     auto renderer = ftxui::Renderer([&] {
         auto dhex = view.get_deq_hex(buffer.get_data(), 0, buffer.size());
         auto data = render::get_hbox(dhex, cursor, byte_in_line);
-        auto infofile = ftxui::text(file) | ftxui::border;
-        return ftxui::vbox({data | ftxui::yflex, infofile });
+        auto infodata = render::metadata(editor.get_mode(), file, editor.command());
+        auto info = infodata | ftxui::border;
+        return ftxui::vbox({data | ftxui::yflex, info });
     });
     auto app = ftxui::CatchEvent(renderer, [&](ftxui::Event e) {
         editor.event(e);
