@@ -29,7 +29,7 @@ target_sources(Lib PUBLIC FILE_SET HEADERS BASE_DIRS include FILES ${LIB_HEADERS
 target_include_directories(Lib PUBLIC include)
 target_link_libraries(Lib PUBLIC ftxui::screen ftxui::dom ftxui::component)
 
-add_executable(chex test.cpp)
+add_executable(chex src/main.cpp)
 
 target_link_libraries(chex PRIVATE Lib)
 
