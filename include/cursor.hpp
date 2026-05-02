@@ -1,24 +1,25 @@
 #pragma once
 #include <cstddef>
+#include <cstdint>
 
 namespace core {
 
 class Cursor {
 public:
-    void set_max_position(const size_t &max_position);
-    void set_position(const size_t &position);
-
-    int move_left(size_t amount = 1);
-    int move_right(size_t amount = 1);
-
-    size_t get_position() const;
+    size_t position() const;
+    size_t byte() const;
     size_t get_max_position() const;
+    uint8_t nibble_index() const;
+
+    void set_max_position(const size_t max_position_);
+
+    void move(const int val);
 
     Cursor();
-    Cursor(size_t max_position);
+    Cursor(const size_t max_position_);
 
 private:
-    size_t position_;
-    size_t max_position_;
+    size_t nibble;
+    size_t max_position;
 };
 }

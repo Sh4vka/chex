@@ -21,6 +21,7 @@ private :
     core::Buffer& buffer;
     size_t bytes_per_row;
     bool has_pending;
+    uint8_t pending;
 };
 
 }

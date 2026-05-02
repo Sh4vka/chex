@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <deque>
+#include <cursor.hpp>
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/component/component.hpp>
 #include <ftxui/component/screen_interactive.hpp>
@@ -8,7 +9,7 @@
 
 namespace render {
 
-ftxui::Element get_hbox(const std::deque<std::string> &hexdata, size_t len = 16, size_t cursor_pos = 0);
+ftxui::Element get_hbox(const std::deque<std::string> &hexdata, core::Cursor &cursor, const size_t len = 16);
 
 ftxui::Element get_vbox(const std::deque<std::string> &hexdata, size_t len = 16);
 

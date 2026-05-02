@@ -5,6 +5,8 @@
 #include <tui.hpp>
 #include <controller.hpp>
 
+static constexpr size_t byte_in_line = 16u;
+
 int main() {
     std::string file = "test.bin";
 
@@ -12,14 +14,14 @@ int main() {
     core::Cursor cur(buf.size() * 2); 
     render::View view;
 
-    render::Editor editor(buf, cur, 16);
+    render::Editor editor(buf, cur, byte_in_line);
 
     auto screen = ftxui::ScreenInteractive::Fullscreen();
 
     auto renderer = ftxui::Renderer([&] {
         auto dhex = view.get_deq_hex(buf.get_data(), 0, buf.size());
 
-        auto data = render::get_hbox(dhex, 16, cur.get_position());
+        auto data = render::get_hbox(dhex, cur, byte_in_line);
 
         auto infofile = ftxui::text(file) | ftxui::border;
 
