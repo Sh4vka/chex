@@ -121,10 +121,10 @@ void Editor::event_search(ftxui::Event e) {
 Editor::Mode Editor::get_mode() const {return mode;}
 std::string Editor::command() const {return command_buffer;}
     
-void Editor::move_left() {cursor.move(-1);}
-void Editor::move_right() {cursor.move(1);}
-void Editor::move_up() {cursor.move(-bytes_per_row * 2);}
-void Editor::move_down() {cursor.move(bytes_per_row * 2);}
+void Editor::move_left() {cursor.move(-1); ensure_visible();}
+void Editor::move_right() {cursor.move(1); ensure_visible();}
+void Editor::move_up() {cursor.move(-viewport.bytes_per_row * 2); ensure_visible();}
+void Editor::move_down() {cursor.move(viewport.bytes_per_row * 2); ensure_visible();}
 
 void Editor::execute_command() {
     if (command_buffer == "q") {quit();}
@@ -180,12 +180,28 @@ void Editor::quit() {
     if (!buffer.status()) {return;}
 }
 
+void Editor::ensure_visible() {
+    if (viewport.rows == 0) return;
+
+    size_t cur = cursor.byte();
+    size_t bpr = viewport.bytes_per_row;
+    size_t start = viewport.offset;
+    size_t end = start + viewport.rows * bpr;
+
+    if (cur < start) {
+        viewport.offset = (cur / bpr) * bpr;
+    } else if (cur >= end) {
+        size_t cur_row = cur / bpr;
+        viewport.offset = (cur_row >= viewport.rows ? cur_row - viewport.rows + 1 : 0) * bpr;
+    }
+}
+
 Editor::Editor(core::Buffer &buffer_,
                core::Cursor &cursor_,
-               size_t bytes_per_row_)
+               render::Viewport &viewport_)
     : buffer(buffer_),
       cursor(cursor_),
-      bytes_per_row(bytes_per_row_),
+      viewport(viewport_),
       has_pending(false),
       pending(0),
       command_buffer(""),

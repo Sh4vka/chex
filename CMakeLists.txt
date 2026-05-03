@@ -20,6 +20,7 @@ set(LIB_HEADERS
     include/view.hpp
     include/tui.hpp
     include/controller.hpp
+    include/viewport.hpp
 )
 
 add_library(Lib STATIC ${LIB_SOURCES})

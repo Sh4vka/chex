@@ -1,6 +1,7 @@
 #pragma once
 #include <buffer.hpp>
 #include <cursor.hpp>
+#include <viewport.hpp>
 #include <ftxui/component/event.hpp>
 #include <string>
 
@@ -21,12 +22,12 @@ public:
     Mode get_mode() const;
     std::string command() const;
 
-    Editor(core::Buffer &buffer_, core::Cursor &cursor_, size_t bytes_per_row);
+    Editor(core::Buffer &buffer_, core::Cursor &cursor_, render::Viewport &viewport_);
 
 private :
     core::Cursor& cursor;
     core::Buffer& buffer;
-    size_t bytes_per_row;
+    render::Viewport& viewport;
     bool has_pending;
     uint8_t pending;
     std::string command_buffer;
@@ -50,6 +51,8 @@ private :
 
     void save();
     void quit();
+
+    void ensure_visible();
 };
 
 }

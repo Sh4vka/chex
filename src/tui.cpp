@@ -2,22 +2,23 @@
 
 namespace render {
 
-ftxui::Element get_hbox(const std::deque<std::string> &hexdata, core::Cursor &cursor, const size_t len) {
+ftxui::Element get_hbox(const std::deque<std::string> &hexdata, core::Cursor &cursor, const size_t len, const size_t offset) {
     std::deque<ftxui::Element> rows;
     std::deque<ftxui::Element> current_row;
     std::deque<ftxui::Element> address;
 
     size_t row = 0;
     size_t byte_index = cursor.byte();
-    size_t nibble = cursor.nibble_index();
+    uint8_t nibble = cursor.nibble_index();
 
     for (size_t i = 0; i < hexdata.size(); ++i) {
+        size_t absolute_i = i + offset;
         std::string byte = hexdata[i];
-        auto left = ftxui::text(std::string(1, byte[0]));
+        auto left  = ftxui::text(std::string(1, byte[0]));
         auto right = ftxui::text(std::string(1, byte[1]));
-        if (i == byte_index) {
-            if (nibble == 0) {left = left | ftxui::inverted;}
-            else {right = right | ftxui::inverted;}
+        if (absolute_i == byte_index) {
+            if (nibble == 0) {left  = left  | ftxui::inverted;}
+            else             {right = right | ftxui::inverted;}
         }
         current_row.push_back(ftxui::hbox({left, right}));
         if ((i + 1) % len != 0)
@@ -25,7 +26,7 @@ ftxui::Element get_hbox(const std::deque<std::string> &hexdata, core::Cursor &cu
 
         if ((i + 1) % len == 0 || i == hexdata.size() - 1) {
             rows.push_back(ftxui::hbox(current_row));
-            address.push_back(ftxui::text(std::format("{:#08x}", row * len)));
+            address.push_back(ftxui::text(std::format("{:#08x}", (row + offset / len) * len)));
             row++;
             current_row.clear();
         }

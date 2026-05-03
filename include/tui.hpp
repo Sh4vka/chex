@@ -10,7 +10,7 @@
 
 namespace render {
 
-ftxui::Element get_hbox(const std::deque<std::string> &hexdata, core::Cursor &cursor, const size_t len = 16);
+ftxui::Element get_hbox(const std::deque<std::string> &hexdata, core::Cursor &cursor, const size_t len, const size_t offset);
 
 ftxui::Element metadata(const Editor::Mode mode, const std::string filename, const std::string command);
 

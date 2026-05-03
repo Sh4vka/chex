@@ -13,7 +13,6 @@ public:
     
     View();
 private:
-    size_t size;
     std::string line_hex;
     std::deque<std::string> deq_hex;
 };

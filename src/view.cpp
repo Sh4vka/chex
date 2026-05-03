@@ -2,7 +2,7 @@
 
 namespace render {
 
-View::View() : size(0), line_hex(""), deq_hex(0) {};
+View::View() : line_hex(""), deq_hex(0) {};
 
 std::string& View::get_string_hex(const std::deque<unsigned char> &data, size_t from, size_t to) {
     std::ostringstream oss;
